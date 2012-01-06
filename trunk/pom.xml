@@ -9,7 +9,7 @@
 
     <groupId>com.googlecode.usc</groupId>
     <artifactId>table-data-copier</artifactId>
-    <version>0.3</version>
+    <version>0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>table-data-copier</name>
     <description>copy table's data from one database to another database(same table schema)</description>
@@ -22,9 +22,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:http://table-data-copier.googlecode.com/svn/tags/table-data-copier-0.3</connection>
-        <developerConnection>scm:svn:https://table-data-copier.googlecode.com/svn/tags/table-data-copier-0.3</developerConnection>
-        <url>scm:svn:https://table-data-copier.googlecode.com/svn/tags/table-data-copier-0.3</url>
+        <connection>scm:svn:http://table-data-copier.googlecode.com/svn/trunk/</connection>
+        <developerConnection>scm:svn:https://table-data-copier.googlecode.com/svn/trunk</developerConnection>
+        <url>http://code.google.com/p/table-data-copier/</url>
     </scm>
     <developers>
         <developer>
