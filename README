@@ -20,8 +20,17 @@ toDbUrl=jdbc:oracle:thin:@${ip}:${port}:${sid}
 toDbUsername=username
 toDbPassword=password
 criteria=table name or criteria
+
+#when occurred error,must open log file.
 openLogFile=false
+#delay Time To Open Log(ms)
 delayTime=5000
+
+#Is Delete Original Data
+deleteOriginalData=false
+
+#Abort When Abnormal Copy
+abort=false
 
 Note: support connect by Oracle Service name. in this case, those URL will tuning as:
 jdbc:oracle:thin:@(DESCRIPTION=(FAILOVER=on)(LOAD_BALANCE=on)(ADDRESS=(PROTOCOL=TCP)(HOST=${ip})(PORT=${port}))(CONNECT_DATA=(SERVICE_NAME=${service_name})))
@@ -30,15 +39,24 @@ and please according to your own environment to reconfigure @${ip},${port},${sid
 - Mysql
 ### Ditto ###
 fromDbDriver=com.mysql.jdbc.Driver
-fromDbUrl=jdbc:mysql://localhost:3306/test
-fromDbUsername=root
-fromDbPassword=lishunli
+fromDbUrl=jdbc:mysql://@${ip}:${port}/${db}
+fromDbUsername=username
+fromDbPassword=password
 toDbDriver=com.mysql.jdbc.Driver
-toDbUrl=jdbc:mysql://localhost:3306/test1
-toDbUsername=root
-toDbPassword=lishunli
-criteria=student
+toDbUrl=jdbc:mysql://@${ip}:${port}/${db}
+toDbUsername=username
+toDbPassword=password
+criteria=table name or criteria
+
+#when occurred error,must open log file.
 openLogFile=false
+#delay Time To Open Log(ms)
 delayTime=5000
+
+#Is Delete Original Data
+deleteOriginalData=false
+
+#Abort When Abnormal Copy
+abort=false
 
 If you have any questions,please contact me(weibo: http://weibo.com/lishunli or qq: 506817493 or email: lishunli.me@gmail.com).
