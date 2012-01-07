@@ -316,7 +316,7 @@ class TableDataCopier extends JFrame {
         String criteria = textField_4_0.getText();
         String tableName = null, deleteSql = null, countSql = null, selectSql = null;
 
-        int indexOf = criteria.toUpperCase().indexOf("FROM");
+        int indexOf = criteria.toUpperCase().lastIndexOf("FROM");
         if (indexOf < 0) { // not find "FROM" word. case insensitive
             tableName = criteria.trim().split("\\s", 2)[0];
             deleteSql = "Delete FROM " + tableName;
