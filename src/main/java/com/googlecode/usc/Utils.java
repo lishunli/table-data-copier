@@ -25,8 +25,8 @@ public class Utils {
         return true;
     }
 
-    public static String buildInsertSql(Set<String> columnNames, String criteria) {
-        StringBuffer insertSql = new StringBuffer("INSERT INTO " + criteria.split("\\s", 2)[0] + " (");
+    public static String buildInsertSql(Set<String> columnNames, String tableName) {
+        StringBuffer insertSql = new StringBuffer("INSERT INTO " + tableName + " (");
         insertSql.append(buildParams(columnNames, ""));
         insertSql.append(") VALUES (");
         insertSql.append(buildParams(columnNames, ":"));
