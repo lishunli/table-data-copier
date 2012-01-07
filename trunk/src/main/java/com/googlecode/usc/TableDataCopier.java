@@ -310,15 +310,18 @@ class TableDataCopier extends JFrame {
 
     @SuppressWarnings("unchecked")
     private void copy() {
-        boolean hasException = false;
         // clear
         results.setText("");
 
         String criteria = textField_4_0.getText();
-        String deleteSql = "Delete FROM " + criteria.split("\\s", 2)[0];
+        String tableName = criteria.split("\\s", 2)[0];
+
+        String deleteSql = "Delete FROM " + tableName;
+        String countSql = "select count(1) from " + tableName;
         String selectSql = "SELECT * FROM " + criteria;
 
         int updateNums = 0;
+        boolean hasException = false;
         Timer timer = new Timer();
         StopWatch stopWatch = new StopWatch();
 
@@ -355,6 +358,9 @@ class TableDataCopier extends JFrame {
                 showResults("\nSelect Table ");
             }
 
+            // start count
+            updateNums = jdbcTemplateTo.queryForInt(countSql);
+
             // select all
             if (!IS_DELETE_ORIGINAL_DATA) {
                 showResults("Select Table ");
@@ -378,7 +384,7 @@ class TableDataCopier extends JFrame {
             stopWatch.start("batch insert");
             for (int i = 0; i * BATCH_SIZE < size; i++) {
                 if (i == 0) {
-                    egiOgInsertSql = Utils.buildInsertSql(selectList.get(0).keySet(), criteria);
+                    egiOgInsertSql = Utils.buildInsertSql(selectList.get(0).keySet(), tableName);
                     logger.info("Insert sql is {}", egiOgInsertSql);
                 }
 
@@ -393,27 +399,19 @@ class TableDataCopier extends JFrame {
                 try {
                     // batch insert
                     jdbcTemplateTo.batchUpdate(egiOgInsertSql, subEgiList.toArray(new Map[0]));
-                    updateNums += subEgiList.size();
                 } catch (Exception e) {
                     hasException = true;
+                    exceptionHandler(e);
 
-                    if (!ABORT_WHEN_ABNORMAL_INSERT) {
-                        // if wrong, per insert
-                        for (int j = 0; j < subEgiList.size(); j++) {
-                            try {
-                                jdbcTemplateTo.update(egiOgInsertSql, subEgiList.get(j));
-                                updateNums++;
-                            } catch (Exception e2) {
-                                exceptionHandler("Insert failed at " + String.format(LINE_FORMAT, i * BATCH_SIZE + j + 1) + " line record", e2);
-                            }
-                        }
-                    } else {
-                        exceptionHandler(e);
+                    if (ABORT_WHEN_ABNORMAL_INSERT) {
                         break;
                     }
                 }
             }
             stopWatch.stop();
+
+            // end count
+            updateNums = jdbcTemplateTo.queryForInt(countSql) - updateNums;
 
             showResults("\n----------------------Result----------------------\n");
             for (StopWatch.TaskInfo taskInfo : stopWatch.getTaskInfo()) {
@@ -430,7 +428,7 @@ class TableDataCopier extends JFrame {
                 stopWatch.stop();
             }
             STOP = true;
-            logger.info("Successfully update {} records", updateNums);
+            logger.info("Successfully insert {} records", updateNums);
 
             if (IS_OPEN_LOG_FILE || hasException) {
                 Timer timer2 = new Timer();
@@ -500,14 +498,8 @@ class TableDataCopier extends JFrame {
         if (Utils.isBlank(results.getText())) {
             results.setText("[ERROR] " + message);
         } else {
-            results.setText(results.getText() + "\n[ERROR] " + message + " please see log file or contact me(QQ.506817493).Thanks. ");
+            results.setText(results.getText() + "\n[ERROR] " + message + "\nplease see log file or contact me(QQ.506817493).Thanks. ");
         }
-    }
-
-    private void exceptionHandler(String errorMsg, Exception e) {
-        showResults("\n[ERROR] " + errorMsg);
-        logger.error(errorMsg);
-        logger.error(e.getMessage());
     }
 
     private class PrintTimerTask extends java.util.TimerTask {

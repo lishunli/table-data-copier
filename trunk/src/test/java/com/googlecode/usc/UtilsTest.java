@@ -37,23 +37,13 @@ public class UtilsTest {
     }
 
     @Test
-    public void testBuildInsertSqlNoWhereStatement() {
-        String criteria = "student";
+    public void testBuildInsertSql() {
+        String tableName = "student";
         Set<String> columnNames = new HashSet<String>();
         columnNames.add("name");
         columnNames.add("age");
 
-        assertEquals("INSERT INTO student (age, name) VALUES (:age, :name)", Utils.buildInsertSql(columnNames, criteria).toString().trim());
-    }
-
-    @Test
-    public void testBuildInsertSqlWithWhereStatement() {
-        String criteria = "student where name = 'lishunli'";
-        Set<String> columnNames = new HashSet<String>();
-        columnNames.add("name");
-        columnNames.add("age");
-
-        assertEquals("INSERT INTO student (age, name) VALUES (:age, :name)", Utils.buildInsertSql(columnNames, criteria).toString().trim());
+        assertEquals("INSERT INTO student (age, name) VALUES (:age, :name)", Utils.buildInsertSql(columnNames, tableName).toString().trim());
     }
 
     @Test
@@ -106,7 +96,6 @@ public class UtilsTest {
         assertNotNull(prop);
         assertNull(prop.get("version"));
     }
-
 
     @Test
     public void testLoadPropertiesFileByPathAndStreamNormal() {
