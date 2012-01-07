@@ -43,7 +43,7 @@ public class UtilsTest {
         columnNames.add("name");
         columnNames.add("age");
 
-        assertEquals("INSERT INTO student(age, name) VALUES (:age, :name)", Utils.buildInsertSql(columnNames, criteria).toString().trim());
+        assertEquals("INSERT INTO student (age, name) VALUES (:age, :name)", Utils.buildInsertSql(columnNames, criteria).toString().trim());
     }
 
     @Test

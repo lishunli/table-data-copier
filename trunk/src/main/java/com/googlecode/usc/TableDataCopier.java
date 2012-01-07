@@ -53,7 +53,6 @@ class TableDataCopier extends JFrame {
 
     private long DELAY_TIME = 1000;
     private boolean STOP = false;
-    private boolean hasException = false;
     private static final String SNAPSHOT_FLAG = "-SNAPSHOT";
     private static final String LINE_FORMAT = "%04d";
 
@@ -311,11 +310,12 @@ class TableDataCopier extends JFrame {
 
     @SuppressWarnings("unchecked")
     private void copy() {
+        boolean hasException = false;
         // clear
         results.setText("");
 
         String criteria = textField_4_0.getText();
-        String deleteSql = "Delete FROM " + criteria;
+        String deleteSql = "Delete FROM " + criteria.split("\\s", 2)[0];
         String selectSql = "SELECT * FROM " + criteria;
 
         int updateNums = 0;

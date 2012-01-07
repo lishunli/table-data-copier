@@ -26,9 +26,7 @@ public class Utils {
     }
 
     public static String buildInsertSql(Set<String> columnNames, String criteria) {
-        int indexOfWhere = criteria.toLowerCase().indexOf("where");
-
-        StringBuffer insertSql = new StringBuffer("INSERT INTO " + (indexOfWhere != -1 ? criteria.substring(0, indexOfWhere) : criteria) + "(");
+        StringBuffer insertSql = new StringBuffer("INSERT INTO " + criteria.split("\\s", 2)[0] + " (");
         insertSql.append(buildParams(columnNames, ""));
         insertSql.append(") VALUES (");
         insertSql.append(buildParams(columnNames, ":"));
