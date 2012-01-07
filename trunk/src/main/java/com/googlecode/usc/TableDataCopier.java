@@ -314,11 +314,20 @@ class TableDataCopier extends JFrame {
         results.setText("");
 
         String criteria = textField_4_0.getText();
-        String tableName = criteria.split("\\s", 2)[0];
+        String tableName = null, deleteSql = null, countSql = null, selectSql = null;
 
-        String deleteSql = "Delete FROM " + tableName;
-        String countSql = "select count(1) from " + tableName;
-        String selectSql = "SELECT * FROM " + criteria;
+        int indexOf = criteria.toUpperCase().indexOf("FROM");
+        if (indexOf < 0) { // not find "FROM" word. case insensitive
+            tableName = criteria.trim().split("\\s", 2)[0];
+            deleteSql = "Delete FROM " + tableName;
+            countSql = "SELECT COUNT(1) FROM " + tableName;
+            selectSql = "SELECT * FROM " + criteria;
+        } else {// find "FROM" word
+            tableName = criteria.substring(indexOf + 4).trim().split("\\s", 2)[0];
+            deleteSql = "Delete FROM " + tableName;
+            countSql = "SELECT COUNT(1) FROM " + tableName;
+            selectSql = criteria;
+        }
 
         int updateNums = 0;
         boolean hasException = false;
